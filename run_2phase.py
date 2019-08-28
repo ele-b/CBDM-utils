@@ -154,20 +154,6 @@ def run_2ph(oct, opt_fn, pts_fn, smx_fp, mf=2, ts=60, r=0, irr=False, direct=Fal
     return res_fn
 
 
-# for pts_n in pts_fn:
-#     pts = os.path.basename(pts_n)
-#     pts = os.path.splitext(pts)[0]
-#
-#     cbdm.make2ph_ill(opt_fn, pts, mf, ts, prj)
-#     ill = pd.read_csv('%s-%s.ill' % (prj, pts), sep='\s+', skiprows=7, skipinitialspace=False, header=None).T
-#     # print(ill.shape)
-#     mets.ill2mets(ill, (8, 18), '%s-%s-2ph' % (prj, pts))
-#     if direct:
-#         cbdm.make2ph_ill(opt_fn, pts, mf, ts, prj, direct=True)
-#         illd = pd.read_csv('%s-%s-d.ill' % (prj, pts), sep='\s+', skiprows=7, skipinitialspace=False, header=None).T
-#         mets.illd2ase(illd, (8, 18), '%s-%s-2ph' % (prj, pts))
-
-
 if __name__ == "__main__":
     args = getArgs()
     print(args)
