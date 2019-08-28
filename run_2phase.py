@@ -6,7 +6,7 @@ import subprocess
 import argparse
 
 nproc_cmd = 'sysctl -n hw.ncpu'
-proc = os.subprocess(nproc_cmd, shell=True, stdout=subprocess.PIPE)
+proc = subprocess.Popen(nproc_cmd, shell=True, stdout=subprocess.PIPE)
 nproc = int(proc.communicate()[0])
 
 
