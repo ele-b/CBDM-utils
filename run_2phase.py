@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 
 from __future__ import print_function
-import cbdm as cbdm
-#import do_ill2mets as mets
-import pandas as pd
 import os
 import subprocess
 import argparse
+
+nproc_cmd = 'sysctl -n hw.ncpu'
+proc = os.subprocess(nproc_cmd, shell=True, stdout=subprocess.PIPE)
+nproc = int(proc.communicate()[0])
 
 
 def getArgs():
@@ -122,8 +123,8 @@ def run_2ph(oct, opt_fn, pts_fn, smx_fp, mf=2, ts=60, r=0, irr=False, direct=Fal
 
         if irr:
             if not os.path.exists(dc_fn):
-                rfluxmtx = 'rfluxmtx -faf -n 8 @%s %s -I+ -y %d < %s - temp/whitesky.rad -i %s.oct | rmtxop -c .33 .33 .34 - > %s' % (
-                    opt_fn, bounces, sen_n, wp_fp, prj, dc_fn)
+                rfluxmtx = 'rfluxmtx -faf -n %d @%s %s -I+ -y %d < %s - temp/whitesky.rad -i %s.oct | rmtxop -c .33 .33 .34 - > %s' % (
+                    nproc, opt_fn, bounces, sen_n, wp_fp, prj, dc_fn)
                 os.system(rfluxmtx)
             else:
                 print('Existing DC matrix used for the simulation')
@@ -131,8 +132,8 @@ def run_2ph(oct, opt_fn, pts_fn, smx_fp, mf=2, ts=60, r=0, irr=False, direct=Fal
             rmtxop = 'rmtxop %s %s | rmtxop -fa - > %s.irr' % (dc_fn, smx_fp, res_fn)
         else:
             if not os.path.exists(dc_fn):
-                rfluxmtx = 'rfluxmtx -faf -n 8 @%s %s -I+ -y %d < %s - temp/whitesky.rad -i %s.oct | rmtxop -c .27 .66 .07 - > %s' % (
-                    opt_fn, bounces, sen_n, wp_fp, prj, dc_fn)
+                rfluxmtx = 'rfluxmtx -faf -n %d @%s %s -I+ -y %d < %s - temp/whitesky.rad -i %s.oct | rmtxop -c .27 .66 .07 - > %s' % (
+                    nproc, opt_fn, bounces, sen_n, wp_fp, prj, dc_fn)
                 os.system(rfluxmtx)
             else:
                 print('Existing DC matrix used for the simulation')
